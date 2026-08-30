@@ -1,0 +1,64 @@
+name: Backtest Pipeline Security & CI
+
+on:
+  push:
+    branches: [ "main", "develop" ]
+  pull_request:
+    branches: [ "main", "develop" ]
+
+jobs:
+  code-quality-and-security:
+    name: Code Audit & Image Scan
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Clone your repository onto a fresh GitHub cloud worker node
+    - name: Checkout Code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0 # Fetch all history so secret scanners can inspect past commits
+
+    # 2. Set up a secure Python environment
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+
+    # 3. Run Code Quality Linter
+    - name: Install Linting Tools
+      run: |
+        python -m pip install --upgrade pip
+        pip install flake8
+        
+    - name: Run Linting Checks
+      run: |
+        # Stop the build if there are Python syntax errors or undefined names
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        # Treat all styling warnings as soft checks for now so it doesn't block your build
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+    # 4. Scan the codebase for leaked Upstox API keys, tokens, or passwords
+    - name: Scan for Hardcoded Secrets
+      uses: trufflesecurity/trufflehog@main
+      with:
+        path: ./
+        base: ${{ github.event.repository.default_branch }}
+        head: HEAD
+        extra_args: --debug
+
+    # 5. Build your production Docker image on the cloud runner to verify compilation
+    - name: Build Local Backtest Docker Image
+      run: |
+        docker build -t backtest-job:latest .
+
+    # 6. Scan the compiled Docker image layers for hidden OS vulnerabilities
+    - name: Run Trivy Vulnerability Scanner
+      uses: aquasecurity/trivy-action@0.28.0
+      with:
+        image-ref: 'backtest-job:latest'
+        format: 'table'
+        exit-code: '0' # Keeps the pipeline green for now, but prints out security risks
+        ignore-unfixed: true
+        vuln-type: 'os,library'
+        severity: 'CRITICAL,HIGH'

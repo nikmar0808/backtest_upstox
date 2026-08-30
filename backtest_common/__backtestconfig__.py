@@ -1,6 +1,3 @@
-access_token="eyJ0eXAiOiJKV1QiLCJrZXlfaWQiOiJza192MS4wIiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiIyMzA5MDMiLCJqdGkiOiI2YTkyNjVlMWJiNTdmZDc3NmU5MWM2ZDYiLCJpc011bHRpQ2xpZW50IjpmYWxzZSwiaXNQbHVzUGxhbiI6dHJ1ZSwiaWF0IjoxNzg3OTc5MjMzLCJpc3MiOiJ1ZGFwaS1nYXRld2F5LXNlcnZpY2UiLCJleHAiOjE3ODgwNDA4MDB9.bsZy2lqAkqKy4VfFvFvbsVJ7yzaEDy8ykS8kd9z0anY"
-#sandbox
-#access_token=""
 CURR_INST_SCRIPT_MASTER_URL ="https://assets.upstox.com/market-quote/instruments/exchange/NSE.json.gz"
 CURR_INST_SCRIP_MASTER_FILE_DIR = "datafiles/ScripMaster/CurrentContracts/"
 CURR_INST_SCRIP_MASTER_JSON_GZ_FILE = "NSE_Scripmaster.json.gz"

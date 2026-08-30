@@ -29,7 +29,8 @@ class HistoryDataCreator:
 
         self.history_data_handler_v3=HistoryDataAPIs()
         self.configuration = upstox_client.Configuration()
-        self.configuration.access_token = __backtestconfig__.access_token
+        # self.configuration.access_token = __backtestconfig__.access_token
+        self.configuration.access_token = os.environ.get("UPSTOX_ACCESS_TOKEN", __backtestconfig__.access_token)
 
     def get_history_data_from_to_dates(self, history_data_raw_file):
         

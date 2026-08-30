@@ -1,0 +1,29 @@
+# Created by venv; see https://docs.python.org/3/library/venv.html
+# Virtual Environment folders
+.env/
+.venv/
+/Include/
+/Lib/
+/Scripts/
+/share/
+pyvenv.cfg
+
+# Historical Data, Signal Files, Trade Data and Logs
+# 1. Allow Git to read the main datafiles folder structure
+!/datafiles/
+# 2. Ignore all files and subfolders directly inside datafiles
+/datafiles/*
+# 3. Add an EXCEPTION for the one folder you want to keep
+!/datafiles/Strategies/
+
+/logs/
+/misc/
+
+# Python caching mechanisms
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# IDE specific configurations
+.vscode/

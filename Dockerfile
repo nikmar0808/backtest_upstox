@@ -1,6 +1,8 @@
 # --- Stage 1: Build Layer for Heavy Python Libraries ---
 FROM python:3.14-slim AS builder
+
 WORKDIR /build
+
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
@@ -19,9 +21,12 @@ COPY requirements.txt .
 # Compile all libraries into wheel binaries in a single clean pass
 RUN pip wheel --no-cache-dir --no-deps --wheel-dir /build/wheels -r requirements.txt
 
+
 # --- Stage 2: Clean Secure Runtime ---
 FROM python:3.14-slim AS runner
+
 WORKDIR /app
+
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONPATH=/app
@@ -41,9 +46,12 @@ COPY --chown=backtestuser:backtestuser upstox_core/ ./upstox_core/
 # FIX: Pull the files from the test_client subfolder instead of the root folder
 COPY --chown=backtestuser:backtestuser test_client/PnL_Optimizer_cls.py test_client/UpstoxBackTestManager_cls.py ./
 
-# Create folders where your backtest reports and logs will live
+# --- FIXED LOGIC LOCATION ---
+# Create folders where your backtest reports and logs will live while still ROOT
 RUN mkdir -p datafiles/RawData datafiles/Reports datafiles/Signals datafiles/TradeData datafiles/FinalData datafiles/TradeDetails logs misc
 RUN chown -R backtestuser:backtestuser datafiles logs misc
 
+# Switch away from root access safely now that paths and permissions are assigned
 USER backtestuser
-ENTRYPOINT ["python", "UpstoxBackTestManager_cls.py"]
+
+ENTRYPOINT ["python", "./UpstoxBackTestManager_cls.py"]

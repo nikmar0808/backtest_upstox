@@ -55,9 +55,8 @@ jobs:
     # 6. Scan the compiled Docker image layers for hidden OS vulnerabilities
     - name: Run Trivy Vulnerability Scanner
       # Trivy is a comprehensive security scanner for container images, file systems, and Git repositories.
-      # It detects vulnerabilities in OS packages and application dependencies.
-      # trivy action version pinned to secure immutable commit SHA instead of tag 0.35.0 to avoid supply chain attacks.
-      uses: aquasecurity/trivy-action@18f259c25edefd329d12fa9027da1a5c2702243f
+      # It detects vulnerabilities in OS packages and application dependencies.      
+      uses: aquasecurity/trivy-action@0.74.0 # latest release version of Trivy GitHub Action
       with:
         image-ref: 'backtest-job:latest'
         format: 'table'

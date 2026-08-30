@@ -25,7 +25,6 @@ class MarketDataAPIs_v3:
             'Accept': 'application/json',
             'Authorization': f'Bearer {self.configuration.access_token}'
         }
-        print(f"API RESPONE OBJECT: {api_response}")
         url = __backtestconfig__.market_data_feed_v3_authorize_url
         api_response = requests.get(url=url, headers=headers)
         print(f"API RESPONE OBJECT: {api_response}")

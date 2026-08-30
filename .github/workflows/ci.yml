@@ -56,11 +56,11 @@ jobs:
     - name: Run Trivy Vulnerability Scanner
       # Trivy is a comprehensive security scanner for container images, file systems, and Git repositories.
       # It detects vulnerabilities in OS packages and application dependencies.      
-      uses: aquasecurity/trivy-action@0.74.0 # latest release version of Trivy GitHub Action
+      uses: aquasecurity/trivy-action@v0.36.0
       with:
         image-ref: 'backtest-job:latest'
         format: 'table'
-        exit-code: '0' # Keeps the pipeline green for now, but prints out security risks
+        exit-code: '0' # Prints risks without failing the pipeline run
         ignore-unfixed: true
         vuln-type: 'os,library'
         severity: 'CRITICAL,HIGH'

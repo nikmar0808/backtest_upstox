@@ -1048,7 +1048,7 @@ class SignalDataCreator:
                 expiry_type_avl_series.loc[i] = exp_type_series[expiry_dates_series == greater_than_val.min()].values
                 if strategy_id == "NIFTY_S01":
 
-                    curr_contracts_file = os.path.join(self.curr_inst_scrip_master_file_dir, curr_contracts_file_name)
+                    curr_contracts_file_name = self.curr_opt_contracts_nf_file_name
 
                 elif strategy_id == "NIFTY_S02":
 

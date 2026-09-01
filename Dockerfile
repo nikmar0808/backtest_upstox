@@ -30,6 +30,8 @@ WORKDIR /app
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONPATH=/app
+# Tells Matplotlib to store its cache files inside our writable app folder path instead of the locked home root
+ENV MPLCONFIGDIR=/datafiles/reports/.matplotlib_cache
 
 # Create a secure user named backtestuser so your code doesn't run as "root"
 RUN useradd -u 8888 backtestuser && chown -R backtestuser:backtestuser /app
@@ -48,8 +50,8 @@ COPY --chown=backtestuser:backtestuser test_client/PnL_Optimizer_cls.py test_cli
 
 # --- FIXED LOGIC LOCATION ---
 # Create folders where your backtest reports and logs will live while still ROOT
-RUN mkdir -p datafiles/RawData datafiles/Reports datafiles/Signals datafiles/TradeData datafiles/FinalData datafiles/TradeDetails logs misc
-RUN chown -R backtestuser:backtestuser datafiles logs misc
+RUN mkdir -p /datafiles/reports /datafiles/RawData /datafiles/Signals /datafiles/TradeData /datafiles/FinalData /datafiles/TradeDetails /logs /misc
+RUN chown -R backtestuser:backtestuser /datafiles /logs /misc
 
 # Switch away from root access safely now that paths and permissions are assigned
 USER backtestuser

@@ -26,7 +26,7 @@ class TradeDataCreator:
         self.trade_data_handler_v3=HistoryDataAPIs()
         self.talib = TALibrary(self.broker)
         self.configuration = upstox_client.Configuration()
-        self.configuration.access_token = __backtestconfig__.access_token
+        self.configuration.access_token = os.environ.get("UPSTOX_ACCESS_TOKEN", "")
 
     def generate_unique_id(self):
         """

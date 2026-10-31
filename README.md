@@ -1,6 +1,6 @@
 # backtest_upstox — Python backtesting of intraday Nifty and BankNifty option strategies
 
-> **Status: personal project, not maintained.** Built in 2024–2026 for the author's own trading research. The companion live-trading component stopped working after the broker changed its API security and new regulatory requirements took effect, and has been retired. The backtesting code is kept here as a record of the work. It is not investment advice and not production code.
+> **Status: personal project, not maintained.** Built in 2024–2026 for the author's own trading research. The companion live-trading component stopped working after the broker changed its API security and new regulatory requirements took effect, and has been retired. The backtesting code is kept here as a record of the software work only. It is not investment advice and not production code; read the [Disclaimer](#disclaimer) before anything else.
 
 The project tests rule-based intraday option-buying strategies on the Nifty 50 and Bank Nifty indices. It pulls historical candles and option-contract data from the [Upstox](https://upstox.com/developer/api-documentation/) broker API, turns each strategy's rules into entry and exit signals, simulates the resulting option trades minute by minute, and produces Excel and PDF reports on how each strategy would have performed. It runs as a container, with a GitHub Actions pipeline that lints, scans for secrets and vulnerabilities, and builds the image.
 
@@ -63,4 +63,15 @@ Data, reports and logs are written to the local `datafiles/`, `logs/` and `misc/
 - Settings and file paths live in Python modules rather than a settings file.
 - Several experimental variants of the signal and trade classes remain alongside the main ones.
 - Backtests ignore brokerage, taxes and liquidity beyond a simple slippage estimate, so live results would differ.
-- The secret scan runs TruffleHog in its default verified-only mode, which cannot flag tokens it cannot verify as live.
+
+## Disclaimer
+
+- This repository is published only as an example of software engineering work. It is not investment advice, a recommendation to buy or sell any security or derivative, or an offer of any service.
+- The strategy files show the configuration format. No claim is made that any strategy is, or was, profitable. Backtested results are hypothetical: they are produced by simulation on past data, do not represent actual trading, and are no indication of future results.
+- Trading in derivatives carries a substantial risk of loss.
+- The code, configuration and any output are provided "as is", without warranty of any kind, express or implied, including fitness for any purpose and correctness of results. The author accepts no liability for any loss or damage, direct or indirect, arising from their use.
+- Anyone who uses any part of this repository does so entirely at their own risk and is solely responsible for complying with the laws, exchange rules and broker terms that apply to them.
+
+## Licence
+
+No licence is granted. All rights are reserved by the author. The code is published for viewing only; no permission is given to copy, modify, distribute or use it, for trading or otherwise.

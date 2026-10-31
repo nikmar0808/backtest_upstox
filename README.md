@@ -23,6 +23,16 @@ flowchart LR
 5. **Reports.** Produces per-signal, per-trade and aggregate results: realised PnL, win rate, maximum favourable and adverse excursion during each trade, with charts.
 6. **Optimisation.** Studies the trade results to find better stop-loss and exit thresholds and how much profit time-based exits left behind.
 
+## Performance design
+
+Years of 1-minute history mean millions of candles per index, so a row-by-row backtest becomes very slow. The signal stage is therefore written as whole-column operations on pandas DataFrames and NumPy arrays rather than Python loops over rows:
+
+- **Vectorised indicators.** EMA, ATR, RMA and the adaptive Gaussian moving average are computed over the entire history in one pass each, with `ewm`, `rolling`, `shift` and NumPy arithmetic.
+- **Vectorised entry rules.** Entry conditions (breakouts of the opening range, EMA filters, time windows) are combined as boolean column expressions with `np.where`, so every candle is evaluated at once.
+- **Array loops only where the maths requires them.** Indicators in which each value depends on the previous one (Supertrend, ATR trailing stop) cannot be expressed as a single column operation; they run as tight loops over plain NumPy arrays instead of over DataFrame rows.
+
+Trade replay, which follows each signal through its option contract's minute candles, still steps through each trade; vectorising it is the next optimisation.
+
 ## Strategies as configuration
 
 Each strategy is a JSON file in `datafiles/Strategies/` (for example `NIFTY_S01.dat`), so a new variant needs no code change. A file sets the index, direction, candle interval, entry window and cut-off, strike offset and adjustment rules, indicator lengths and multipliers, exit and trailing-stop parameters, investment per trade and daily loss limit.

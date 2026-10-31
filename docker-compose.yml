@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  backtest-job:
+    # 1. Directs Compose to build the local multi-stage Dockerfile in this directory
+    build:
+      context: .
+      dockerfile: Dockerfile
+    
+    # 2. Forces Compose to read .env file and map variables even if your terminal environment is blank
+    env_file:
+      - .env
+      
+    # 3. BIND VOLUMES: Connects container paths directly to your local Windows drive paths
+    volumes:
+      - ./datafiles:/app/datafiles
+      - ./logs:/app/logs
+      - ./misc:/app/misc
+
+    # 4. ENVIRONMENT INJECTION: Safely passes keys from your terminal memory down to the container
+    environment:
+      - UPSTOX_ACCESS_TOKEN=${UPSTOX_ACCESS_TOKEN}
+

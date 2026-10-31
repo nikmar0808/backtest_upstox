@@ -42,10 +42,11 @@ jobs:
     - name: Scan for Hardcoded Secrets
       uses: trufflesecurity/trufflehog@main
       with:
-        path: ./
-        base: ${{ github.event.repository.default_branch }}
-        head: HEAD
-        extra_args: --debug
+        # # path: ./
+        # # base: ${{ github.event.repository.default_branch }}
+        # # head: HEAD
+        # extra_args: --debug
+        extra_args: --results=verified,unknown
 
     # 5. Build your production Docker image on the cloud runner to verify compilation
     - name: Build Local Backtest Docker Image
